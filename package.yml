@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'sam-test
+
+  Sample SAM Template for sam-test
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+    Tracing: Active
+Resources:
+  ClockFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://jcendales-learning-lambda-sam/a7736874813968e4337e9e2eb3ec60f3
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+      - x86_64
+      Events:
+        ClockApi:
+          Type: Api
+          Properties:
+            Path: /clock
+            Method: get
+    Metadata:
+      SamResourceId: ClockFunction
+Outputs:
+  ClockApi:
+    Description: API Gateway endpoint URL for Prod stage for clock function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/lambda/clock/
+  ClockFunction:
+    Description: Clock Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - ClockFunction
+      - Arn
